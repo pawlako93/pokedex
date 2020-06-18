@@ -1,0 +1,32 @@
+body {
+    margin: 30px;
+}
+
+#pokedex {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 10px;
+}
+
+ul {
+    padding: 0px;
+}
+
+h1, h2 {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+img {
+    width: 100px;
+    height: 100px;
+    align-content: center;
+}
+
+.card {
+    border: solid 1px black;
+    background-color: white;
+    text-align: center;
+}
