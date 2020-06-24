@@ -1,33 +1,81 @@
 const pokedex = document.getElementById("pokedex");
+const buttons = document.getElementById("buttons");
+const nextPage = document.getElementById("nextPage");
+const previousPage = document.getElementById("previousPage");
+const perPage = document.getElementById("perPage");
+const statsDiv = document.getElementById("stats");
+
+
+
+const elements5 = document.getElementById("elements5");
+elements5.addEventListener('click', ()=>{ let url='https://pokeapi.co/api/v2/pokemon?offset=0&limit=5'; getPokemons(url); pokedex.innerHTML = '';});
+
+const elements10 = document.getElementById("elements10");
+elements10.addEventListener('click', ()=>{ let url='https://pokeapi.co/api/v2/pokemon?offset=0&limit=10'; getPokemons(url); pokedex.innerHTML = '';});
+
+const elements15 = document.getElementById("elements15");
+elements15.addEventListener('click', ()=>{ let url='https://pokeapi.co/api/v2/pokemon?offset=0&limit=15'; getPokemons(url); pokedex.innerHTML = '';});
+
+const elements20 = document.getElementById("elements20");
+elements20.addEventListener('click', ()=>{ let url='https://pokeapi.co/api/v2/pokemon?offset=0&limit=20'; getPokemons(url); pokedex.innerHTML = '';});
+
+
+
+nextPage.addEventListener('click', () => {
+    if (nextUrl === null){
+        return
+    } else {
+    getPokemons(nextUrl);
+    pokedex.innerHTML = ''
+    }
+})
+previousPage.addEventListener('click', () => {
+    if (prevUrl === null){
+        return
+    } else {
+        getPokemons(prevUrl);
+        pokedex.innerHTML = ''
+    }
+    
+
+});
 
 let offset = 0;
-let limit = 10;
+let url = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=20`;
+let urlPokemon = null;
+let nextUrl = null;
+let prevUrl = null;
 
-const getPokemons = async () => {
-    const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
+
+const getPokemons = async (url) => {
+    const fetchPokemonData = async (pokemon) => {
+        let url = pokemon.url;
+        const response = await fetch(url)
+        const data = await response.json();
+        const pokemons = {
+        id: data.id,
+        name: data.name,
+    }
+    displayPokemon(pokemons);
+    }
+
     const response = await fetch(url);
     const data = await response.json();
-    const pokemon = data.results.map((result, index) => ({
-        name: result.name,
-        id: index + offset + 1,
-        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + offset + 1}.png`,
-        url: result.url,
-        next: data.next,
-        previous: result.previous,
-    }));
-    displayPokemon(pokemon);
+    const pokemonsData = data.results.forEach((pokemon) => {
+        fetchPokemonData(pokemon);
+    });
+    nextUrl = data.next;
+    prevUrl = data.previous;
+    
+}
 
-};
-
-const displayPokemon = pokemons => {
-    const cards = pokemons
-        .map(pokemon =>
-            `<li class="card" onclick="selectPokemon(${pokemon.id})">
-                <img class="card-image" src="${pokemon.image}"/>
-                <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
-            </li>`
-        ).join("");
-    pokedex.innerHTML = cards;
+const displayPokemon = pokemons => {    
+    const cards = 
+        `<li class="card" onclick="selectPokemon(${pokemons.id})">
+            <h2 class="card-title">${pokemons.id}. ${pokemons.name}</h2>
+            <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemons.id}.png"/>
+        </li>`;
+    pokedex.innerHTML += cards;
 }
 
 const selectPokemon = async (id) => {
@@ -46,23 +94,23 @@ const showStats = pokemon => {
         hp: pokemon.stats[0].base_stat,
         attack: pokemon.stats[1].base_stat,
         defense: pokemon.stats[2].base_stat,
+        id: pokemon.id,
     }
-
-    console.log(stats);
     statsWindow(stats)
-}
+};
 
 const statsWindow = stats => {
     const statsHTML = `
     <div class="statsWindow">
         <button id="closeBtn" onclick="closeStatsWindow()">Close</button>
-        <div class="card">
+        <div class="statCard">
+            <img class="card-image" src="https://pokeres.bastionbot.org/images/pokemon/${stats.id}.png"/>
             <h2 class="card-title">${stats.name}</h2>
             <p><small>Type: ${stats.type} | Height:</small> ${stats.height} | Weight: ${stats.weight}</p>
-            <p><small>HP: ${stats.hp}| ATTACK: ${stats.attack} | DEFENSE: ${stats.defense}</p>
+            <p><small>HP: ${stats.hp} | ATTACK: ${stats.attack} | DEFENSE: ${stats.defense}</p>
         </div>
     </div>`;
-    pokedex.innerHTML = statsHTML + pokedex.innerHTML;
+    statsDiv.innerHTML = statsHTML;
 };
 
 const closeStatsWindow = () => {
@@ -70,4 +118,4 @@ const closeStatsWindow = () => {
     statsWindow.parentElement.removeChild(statsWindow);
 };
 
-getPokemons();
+getPokemons(url);
