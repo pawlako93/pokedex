@@ -1,112 +1,313 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
 body {
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(90deg, rgba(231,121,112,1) 35%, rgba(213,90,113,1) 75%);
-    font-family: 'Raleway', sans-serif;
-    font-size: 14px;
-    color: #010b26;
-    margin: 0;
-}
-
-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: auto;
-    border-bottom: solid 1px black;
-    z-index: 10;
-    background-color: #FBFBFB;
-}
-
-#pokedex {
-    top: 50px;
-    padding: 100px 10px 0px 10px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-gap: 20px;
-}
-
-li {
-    padding: 0px;
-    list-style: none;
+  background: -webkit-gradient(linear, left top, right top, color-stop(35%, #e77970), color-stop(75%, #d55a71));
+  background: linear-gradient(90deg, #e77970 35%, #d55a71 75%);
+  font-family: 'Raleway', sans-serif;
+  color: #010b26;
+  margin: 0;
 }
 
 h1 {
-    text-align: center;
-    font-size: 2rem;
-
+  text-align: center;
+  font-size: 2rem;
 }
 
-.card {
-    border:1px solid  #3A3335;
-    background: #FBFBFB;
-    text-align: center;
-    box-shadow: inset 1px 3px 22px -17px rgba(0,0,0,1);
-    border-radius: 15px;
-    height: 250px;
-    width: 100%;
-    transition: ease-in-out 0.5s;
-    font-weight: 400;
-
-}
-.card:hover {
-    transition: ease-in-out 0.5s;
-    transform: scale(1.05);
-
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: auto;
+  border-bottom: solid 1px black;
+  z-index: 10;
+  background-color: #FBFBFB;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
-
-.card-image {
-    margin-top: 50px;
-    width: 100px;
-    height: 100px;    
+.navbar .choose {
+  justify-self: center;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
-.card-title {
-    text-transform: uppercase;    
-    font-size: 1.25rem;
-    margin-bottom: 0px;
+.navbar .choose #searchBar {
+  margin: 20px 30px 5px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
-.card-subtitle {    
-    color: gray;
-    margin-top: 5px;
+.navbar .choose #perPage {
+  margin: 0px 30px 20px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
-.statsWindow {
+.navbar h1 {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.navbar #navigationBtn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+.container #pokedex {
+  position: relative;
+  top: 100px;
+  padding: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container li {
+  padding: 0px;
+  list-style: none;
+}
+
+.container .card {
+  border: 2px solid #3A3335;
+  background: #fff;
+  text-align: center;
+  -webkit-box-shadow: inset 1px 3px 22px -17px black;
+          box-shadow: inset 1px 3px 22px -17px black;
+  border-radius: 15px;
+  height: 250px;
+  min-width: 400px;
+  -webkit-transition: ease-in-out 0.5s;
+  transition: ease-in-out 0.5s;
+  font-weight: 400;
+  margin: 10px;
+}
+
+.container .card .card-image {
+  margin-top: 50px;
+  width: 100px;
+  height: 100px;
+}
+
+.container .card .card-title {
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  margin-bottom: 0px;
+}
+
+.container .card .card-subtitle {
+  color: gray;
+  margin-top: 5px;
+}
+
+.container .card:hover {
+  -webkit-transition: ease-in-out 0.5s;
+  transition: ease-in-out 0.5s;
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+.container .statsWindow {
+  position: fixed;
+  top: 25%;
+  left: 25%;
+  height: 60vh;
+  width: 50vw;
+  border: solid 2px black;
+  background: #f4f4f4;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+.container .statsWindow .card-image {
+  margin-top: 50px;
+  width: 100px;
+  height: 100px;
+}
+
+.container .statsWindow .card-title {
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  margin-bottom: 0px;
+}
+
+.container .statsWindow .statCard {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.loading {
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.loading.hidden {
+  -webkit-animation: fadeOut 1s;
+          animation: fadeOut 1s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+button {
+  background-color: #e77970;
+  border: solid 1.5px black;
+  border-radius: 10px;
+  color: white;
+  padding: 5px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  -webkit-transition: ease-in-out 0.1s;
+  transition: ease-in-out 0.1s;
+  -webkit-box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.75);
+          box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.75);
+  outline: none;
+}
+
+button:active {
+  background-color: #fc1500;
+  -webkit-transition: ease-in-out 0.1s;
+  transition: ease-in-out 0.1s;
+}
+
+button:hover {
+  -webkit-transition: ease-in-out 0.1s;
+  transition: ease-in-out 0.1s;
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+@-webkit-keyframes fadeOut {
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .navbar {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .navbar h1 {
+    font-size: 3em;
+    margin: 5px;
+  }
+  .navbar #navigationBtn {
+    margin-bottom: 10px;
+  }
+  .navbar #navigationBtn button {
+    font-size: 0.8em;
+    margin: 5px;
+  }
+  .container #pokedex {
+    top: 200px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .container .statsWindow {
     position: fixed;
-    top: 25%;
-    left: 25%;
-    height: 50vh;
-    width: 50vw;
     border: solid 2px black;
-    background: #f4f4f4;    
+    background: #f4f4f4;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 99;
+  }
+  .container .statsWindow #closeBtn {
+    padding: 5px;
+    margin: 5px;
+  }
 }
 
-#closeBtn {
-    position: absolute;
-    top: 25%;
-    right: 25%;
-    height: 25px;
-    width: auto;
+@media only screen and (max-width: 480px) {
+  .container .card {
+    min-width: 200px;
+  }
 }
-
-#navigationBtn {
-    position: absolute;
-    top: 40%;
-    right: 5%;
-    height: 25px;
-    width: auto;
-}
-
-#perPage {
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    height: 25px;
-    width: auto;
-}
+/*# sourceMappingURL=main.css.map */
