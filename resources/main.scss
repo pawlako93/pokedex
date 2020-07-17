@@ -8,6 +8,7 @@ body {
     //font-size: 14px;
     color: #010b26;
     margin: 0;
+    
 }
 
 h1 {
@@ -57,12 +58,12 @@ h1 {
     #pokedex {
         position: relative;
         top: 100px;
-        padding: 5px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
+        padding: 0px;
     }
     li {
         padding: 0px;

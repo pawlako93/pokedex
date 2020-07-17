@@ -1,5 +1,4 @@
 const pokedex = document.getElementById("pokedex");
-const buttons = document.getElementById("buttons");
 const nextPageBtn = document.getElementById("nextPage");
 const prevPageBtn = document.getElementById("previousPage");
 const perPage = document.getElementById("perPage");
@@ -7,35 +6,12 @@ const statsDiv = document.getElementById("stats");
 const searchBar = document.getElementById("searchBar");
 const loader = document.querySelector(".loading");
  
-let urlPokemon = null;
 let currentPage = 0;
 let limit = 20;
 let offset = 0;
-let nextPage = 0;
-let prevPage = 0;
-let url = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=${limit}`;
+let baseUrl = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
 let pokemonID = 0;
 
-
-/*
-window.addEventListener("load", () => {
-    loader.className += " hidden";
-})
- */
-
-const getPokemons = async (url) => {
-  const response = await fetch(url);
-  const data = await response.json();
-  console.log(data)
-  const pokemons = data.results.map((data, index) => ({
-    name: data.name,
-    id: index + 1 + pokemonID,
-    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1 + pokemonID}.png`,
-  }))
-    
-  console.log(pokemons);
-  displayPokemon(pokemons);
-};
 nextPageBtn.addEventListener("click", () => {
   if (currentPage === null) {
     return;
@@ -43,14 +19,13 @@ nextPageBtn.addEventListener("click", () => {
     currentPage++;
     offset = currentPage * limit;
     pokemonID = offset;
-    let url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
-    getPokemons(url);
+    let nextUrl = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
+    getPokemonsData(nextUrl);
     pokedex.innerHTML = "";
     nextPageBtn.setAttribute('disabled', 'disabled');
     setTimeout(() => { nextPageBtn.removeAttribute('disabled')}, 1000);
-}
+  }
 });
-
 prevPageBtn.addEventListener("click", () => {
   if (currentPage === 0) {
     return;
@@ -58,14 +33,16 @@ prevPageBtn.addEventListener("click", () => {
     currentPage--;
     offset = currentPage * limit;
     pokemonID = offset;
-    let url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
-    getPokemons(url);
+    let prevUrl = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
+    getPokemonsData(prevUrl);
     pokedex.innerHTML = "";
     prevPageBtn.setAttribute('disabled', 'disabled');
     setTimeout(() => { prevPageBtn.removeAttribute('disabled')}, 1000);
   }
 });
- 
+perPage.addEventListener("keyup", (e) => pagination(e));
+searchBar.addEventListener("keyup", (e) => searchForPokemon(e));
+
 let pagination = (e) => {
   if (e.keyCode == 13) {
     const perPage = e.target.value;
@@ -76,53 +53,40 @@ let pagination = (e) => {
       currentPage = 0;
       offset = currentPage * limit;
       pokemonID = offset;
-      let url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
+      let baseUrl = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
       pokedex.innerHTML = "";
-      getPokemons(url);
+      getPokemonsData(baseUrl);
     }
   }
 };
- 
-perPage.addEventListener("keyup", (e) => pagination(e));
- 
-searchBar.addEventListener("keyup", (e) => {
+let searchForPokemon = (e) => {
   if (e.keyCode == 13) {
     const searchString = e.target.value.toLowerCase();
-    if (searchString === "") {
-      alert("You need to type something!");
-    } else {
-      let url = `https://pokeapi.co/api/v2/pokemon/${searchString}`;
-      singlePokemon(url).catch((error) => {
-        if (error) {
-          alert("Pokemon doesn't exist");
-        }
-      });
-    }
+  if (searchString === "") {
+    alert("You need to type something!");
+  } else {
+    let singlePokemonUrl = `https://pokeapi.co/api/v2/pokemon/${searchString}`;
+    getSinglePokemonData(singlePokemonUrl).catch((error) => {
+      if (error) {
+        alert("Pokemon doesn't exist");
+      }
+    });
   }
-});
- 
-const singlePokemon = async (url) => {
-  const response = await fetch(url);
-  const data = await response.json();
-  const pokemon = {
-    id: data.id,
-    name: data.name,
-  };
-  displaySinglePokemon(pokemon);
 };
- 
-const displaySinglePokemon = (pokemon) => {
-  pokedex.innerHTML = "";
-  const cards = `<li class="card" onclick="selectPokemon(${pokemon.id})">
-                <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
-                <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png"/>
-                </li>`;
-  pokedex.innerHTML += cards;
-};
- 
 
- 
-const displayPokemon = (pokemons) => {
+}
+
+const getPokemonsData = async (getPokemonUrl) => {
+  const response = await fetch(getPokemonUrl);
+  const data = await response.json();
+  const pokemons = data.results.map((data, index) => ({
+    name: data.name,
+    id: index + 1 + pokemonID,
+    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1 + pokemonID}.png`,
+  }));
+  displayPokemons(pokemons);
+};
+const displayPokemons = (pokemons) => {
   const cards = pokemons.map (pokemon =>
     ` <li class="card" onclick="selectPokemon(${pokemon.id})">
       <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
@@ -131,14 +95,31 @@ const displayPokemon = (pokemons) => {
     )
   pokedex.innerHTML += cards;
 };
- 
+
+const getSinglePokemonData = async (singlePokemonUrl) => {
+  const response = await fetch(singlePokemonUrl);
+  const data = await response.json();
+  const pokemon = {
+    id: data.id,
+    name: data.name,
+  };
+  displaySinglePokemon(pokemon);
+};
+const displaySinglePokemon = (pokemon) => {
+  pokedex.innerHTML = "";
+  const cards = `<li class="card" onclick="selectPokemon(${pokemon.id})">
+                <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
+                <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png"/>
+                </li>`;
+  pokedex.innerHTML += cards;
+};
+
 const selectPokemon = async (id) => {
   const urlStats = `https://pokeapi.co/api/v2/pokemon/${id}/`;
   const responseStats = await fetch(urlStats);
   const dataStats = await responseStats.json();
   showStats(dataStats);
-};
- 
+}; 
 const showStats = (pokemon) => {
   const stats = {
     name: pokemon.name,
@@ -151,8 +132,7 @@ const showStats = (pokemon) => {
     id: pokemon.id,
   };
   statsWindow(stats);
-};
- 
+}; 
 const statsWindow = (stats) => {
   const statsHTML = `
     <div class="statsWindow">
@@ -166,12 +146,10 @@ const statsWindow = (stats) => {
 
     </div>`;
   statsDiv.innerHTML = statsHTML;
-};
- 
+}; 
 const closeStatsWindow = () => {
   const statsWindow = document.querySelector(".statsWindow");
   statsWindow.parentElement.removeChild(statsWindow);
 };
  
-
-getPokemons(url);
+getPokemonsData(baseUrl);

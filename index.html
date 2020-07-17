@@ -12,9 +12,9 @@
     <nav>
         <div class="navbar">
             <div class="choose">
-                <input type="text" name="searchBar" id="searchBar" placeholder="Search for a pokemon"/>
+                <input type="text" name="searchBar" id="searchBar" placeholder="Search for a pokemon. ID or Name (Press Enter)"/>
 
-                <input type="text" name="searchBar" id="perPage" placeholder="How much pokemon do you want to display?"/>    
+                <input type="text" name="howManyPerPage" id="perPage" placeholder="How much pokemon do you want to display? (Press Enter)"/>    
             </div>
     
             <h1>POKEDEX</h1>
@@ -27,20 +27,14 @@
         </div>
         <div id="search">                    
         </div>
-        
     </nav>
-    <div class="container">
-<!--
-<div class="loading">
-            <img src="./resources/gif/loading.gif" alt="Loading...">
+    <main>
+        <div class="container">                    
+            <ol id="pokedex"></ol>                    
+            <div id="stats"></div>
         </div>
--->
-        
-        <ol id="pokedex"></ol>
-        
-        <div id="stats">
-        </div>
-    </div>
+                
+    </main>
     
     <script src="./scripts/main.js"></script>
 </body>
