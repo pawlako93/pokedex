@@ -14,17 +14,35 @@ let offset = 0;
 let nextPage = 0;
 let prevPage = 0;
 let url = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=${limit}`;
+let pokemonID = 0;
 
+
+/*
 window.addEventListener("load", () => {
     loader.className += " hidden";
 })
- 
+ */
+
+const getPokemons = async (url) => {
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log(data)
+  const pokemons = data.results.map((data, index) => ({
+    name: data.name,
+    id: index + 1 + pokemonID,
+    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1 + pokemonID}.png`,
+  }))
+    
+  console.log(pokemons);
+  displayPokemon(pokemons);
+};
 nextPageBtn.addEventListener("click", () => {
   if (currentPage === null) {
     return;
   } else {
     currentPage++;
     offset = currentPage * limit;
+    pokemonID = offset;
     let url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
     getPokemons(url);
     pokedex.innerHTML = "";
@@ -39,6 +57,7 @@ prevPageBtn.addEventListener("click", () => {
   } else {
     currentPage--;
     offset = currentPage * limit;
+    pokemonID = offset;
     let url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
     getPokemons(url);
     pokedex.innerHTML = "";
@@ -55,7 +74,9 @@ let pagination = (e) => {
     } else {
       limit = perPage;
       currentPage = 0;
-      let url = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=${limit}`;
+      offset = currentPage * limit;
+      pokemonID = offset;
+      let url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
       pokedex.innerHTML = "";
       getPokemons(url);
     }
@@ -93,37 +114,21 @@ const singlePokemon = async (url) => {
 const displaySinglePokemon = (pokemon) => {
   pokedex.innerHTML = "";
   const cards = `<li class="card" onclick="selectPokemon(${pokemon.id})">
-            <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
-            <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png"/>
-        </li>`;
+                <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
+                <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png"/>
+                </li>`;
   pokedex.innerHTML += cards;
 };
  
-const getPokemons = async (url) => {
-    const fetchPokemonData = async (pokemon) => {
-    let url = pokemon.url;
-    const response = await fetch(url);
-    const data = await response.json();
-    const pokemons = {
-      id: data.id,
-      name: data.name,
-      image: data.sprites.front_default
-    };
-        displayPokemon(pokemons);
-    };
- 
-    const response = await fetch(url);
-    const data = await response.json();
-    const pokemonsData = data.results.forEach((pokemon) => {
-    fetchPokemonData(pokemon);
-    });
-};
+
  
 const displayPokemon = (pokemons) => {
-  const cards = `<li class="card" onclick="selectPokemon(${pokemons.id})">
-                <h2 class="card-title">${pokemons.id}. ${pokemons.name}</h2>
-                <img class="card-image" src="${pokemons.image}"/>
-                </li>`;
+  const cards = pokemons.map (pokemon =>
+    ` <li class="card" onclick="selectPokemon(${pokemon.id})">
+      <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
+      <img class="card-image" src="${pokemon.image}"/>
+      </li>`
+    )
   pokedex.innerHTML += cards;
 };
  
@@ -168,47 +173,5 @@ const closeStatsWindow = () => {
   statsWindow.parentElement.removeChild(statsWindow);
 };
  
+
 getPokemons(url);
- 
-/* PRAWIDŁOWA WERSJA - DZIAŁA ALE ID SIE NIE ZMIENIA
- 
-    const getPokemons = async (url) => {
-    const response = await fetch(url);
-    const data = await response.json();
-    const pokemon = data.results.map((result, index) => ({
-        name: result.name,
-        url: result.url,
-        id: index + 1,
-    }));
- 
-    nextUrl = data.next;
-    prevUrl = data.previous;
-    urlPokemon = data.results.url,
-    //image: `https://pokeres.bastionbot.org/images/pokemon/1.png`,
-    displayPokemon(pokemon);
-    console.log(urlPokemon);
-    //console.log(pokeUrl);
-}
- 
-const displayPokemon = pokemons => {
-    const cards = pokemons
-        .map(pokemon =>
-            `<li class="card" onclick="selectPokemon(${pokemon.id})">
-                <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
-            </li>`
-        ).join("");
-        //                <img class="card-image" src="${pokemon.image}"/>
- 
-    pokedex.innerHTML = cards;
- 
-}
- 
-const selectPokemon = async (id) => {
-    const urlStats = `https://pokeapi.co/api/v2/pokemon/${id}/`;
-    const responseStats = await fetch(urlStats);
-    const dataStats = await responseStats.json();
-    showStats(dataStats);
-}
- 
- 
-    */
