@@ -1,0 +1,235 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(90deg, rgba(231, 121, 112, 1) 35%, rgba(213, 90, 113, 1) 75%);
+    font-family: 'Raleway', sans-serif;
+    //font-size: 14px;
+    color: #010b26;
+    margin: 0;
+    
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    height: auto;
+    border-bottom: solid 1px black;
+    z-index: 10;
+    background-color: #FBFBFB;
+    align-items: center;
+    
+    .choose {
+        justify-self: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        #searchBar {
+            margin: 20px 30px 5px;
+            flex: 1;
+        }
+        #perPage {
+            margin: 0px 30px 20px;
+            flex: 1;
+        }
+    }
+
+    h1 {
+        flex: 1;
+    }
+    #navigationBtn {
+        display: flex;
+        flex: 1;
+        justify-content: space-evenly;
+        
+    }
+}
+
+.container {
+    
+    #pokedex {
+        position: relative;
+        top: 100px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+    }
+    li {
+        padding: 0px;
+        list-style: none;
+    }
+    .card {
+        border: 2px solid #3A3335;
+        background: #fff;
+        text-align: center;
+        box-shadow: inset 1px 3px 22px -17px rgba(0, 0, 0, 1);
+        border-radius: 15px;
+        height: 250px;
+        min-width: 400px;
+        transition: ease-in-out 0.5s;
+        font-weight: 400;
+        margin: 10px;
+        
+        .card-image {
+            margin-top: 50px;
+            width: 100px;
+            height: 100px;
+        }
+        .card-title {
+            text-transform: uppercase;
+            font-size: 1.25rem;
+            margin-bottom: 0px;
+        }
+        .card-subtitle {
+            color: gray;
+            margin-top: 5px;
+        }
+    }
+    .card:hover {
+        transition: ease-in-out 0.5s;
+        transform: scale(1.05);
+    }
+    .statsWindow {
+        position: fixed;
+        top: 25%;
+        left: 25%;
+        height: 60vh;
+        width: 50vw;
+        border: solid 2px black;
+        background: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        .card-image {
+            margin-top: 50px;
+            width: 100px;
+            height: 100px;
+        }
+        .card-title {
+            text-transform: uppercase;
+            font-size: 1.25rem;
+            margin-bottom: 0px;
+        }
+        .statCard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+
+        }
+        
+    }
+}
+
+.loading {
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading.hidden {
+    animation: fadeOut 1s;
+    animation-fill-mode: forwards;
+}
+
+button {
+    background-color: rgba(231, 121, 112, 1);
+    border: solid 1.5px black;
+    border-radius: 10px;
+    color: white;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    transition: ease-in-out 0.1s;
+    box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.75);
+    outline: none;
+}
+button:active{
+    background-color: rgb(252, 21, 0);
+    transition: ease-in-out 0.1s;
+
+}
+button:hover {
+    transition: ease-in-out 0.1s;
+    transform: scale(1.05);
+}
+
+@keyframes fadeOut {
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .navbar{
+        flex-direction: column;
+        h1 {
+            font-size: 3em;
+            margin: 5px;
+        }
+        #navigationBtn {
+            margin-bottom: 10px;           
+            button {
+                font-size: 0.8em;
+                margin: 5px;
+
+            }
+        }
+    }
+    .container {
+        #pokedex {
+            top: 200px;
+            flex-direction: column;  
+        }
+        .statsWindow {
+            position: fixed;
+            border: solid 2px black;
+            background: #f4f4f4;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: 99;
+            #closeBtn {
+                padding: 5px;
+                margin: 5px;
+            }
+            
+            
+    }
+    }
+    
+    
+}
+
+@media only screen and (max-width: 480px){
+    .container {
+        .card {
+            min-width: 200px;
+        }
+    }
+}
